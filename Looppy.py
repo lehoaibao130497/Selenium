@@ -1,11 +1,40 @@
-# Python3 code to iterate over a list 
-list = [1, 3, 5, 7, 9] 
-
-# Using for loop 
-for i in list: 
-	print(i) 
+import xlsxwriter 
+from bs4 import BeautifulSoup
+import requests
+import urllib
 
 
-userlist = [("userA","pwdA"),("userB","pwdB")]
-for user,pwd in userlist:
-    print(user,pwd)
+url = "https://finance.yahoo.com/"
+page = urllib.request.urlopen(url)
+soup = BeautifulSoup(page.read(), "html.parser")
+# target = soup.find_all("span", attrs={"class":"Fz(s)"})
+# target = soup.select('#marketsummary-itm-\^GSPC > h3 > span')
+target = soup.find('span',attrs={'class': 'Trsdu(0.3s)'})
+
+
+workbook = xlsxwriter.Workbook('Exxx.xlsx') 
+worksheet = workbook.add_worksheet("Sheet1") 
+row = 0
+col = 0
+# for i in range(5):
+#     let = i+1
+#     print(let)
+names =(["HLB","100"],
+        ["PBB","200"],
+        ["MBB","200"],
+        ["CIMB","200"],
+        ["RHB","200"],
+        ["HLB","200"]
+        )
+
+for name,number in (names):
+    for let in target:
+        len = str(len)
+        worksheet.write(row, col, name) 
+        worksheet.write(row, col+1, number) 
+        worksheet.write(row, col+2, len)
+        row += 1
+    workbook.close() 
+
+  
+ 
